@@ -17,18 +17,18 @@ def main():
     tag_chosen=input()
 
     if cost_chosen=="Any":
-        r1=restaurants
+        clean1=restaurants
     else:
-        r1 = restaurants.loc[restaurants['Cost']==cost_chosen] # 
-
+        clean1 = restaurants.loc[restaurants['Cost']==cost_chosen] # 
     if cuisine_chosen=="Any":
-        r2=r1
+        clean2=clean1
     else:
-        r2 = r1.loc[r1['Style 1']==style_chosen | r1['Style 2']==style_chosen | r1['Style 3'==style_chosen]] 
-    
+          clean2 = clean1.loc[(clean1["Style 1"]==cuisine_chosen) |(clean1["Style 2"]==cuisine_chosen) |(clean1["Style 3"]==cuisine_chosen)]
     if tag_chosen=="Any":
-        r3=r2
+        clean3=clean2
     else:
-        r3 = r2.loc[r2['Particularly Good For']==particularly_good_for] # get all restaurants with the chosen good for
-
-    r3.sample(n=None, frac=None, replace=False, weights=None, random_state=None, axis=None, ignore_index=False ) # shuffle the data
+        clean3 = clean2.loc[clean2['Particularly Good For']==tag_chosen] # get all restaurants with the chosen good for
+    choice=clean3.sample(n=1) # get a random restaurant from the clean3 dataframe
+    final=choice['Name'].values[0] # get the name of the restaurant
+    print("The restaurant you should go to is: " + final)
+   
