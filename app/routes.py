@@ -124,20 +124,20 @@ def subs():
                                 new_text=new_text)
 
 
-def choose_me(cost_chosen, cuisine_chosen, tag_chosen):
+def choose_me2(cost_chosen, cuisine_chosen, tag_chosen):
     import pandas as pd
     import numpy as np
 
     restaurants = pd.read_csv('Claremont_DB1.csv')
 
     #print("What cost range would you like to search for?")
-    cost_chosen=input()
+    #cost_chosen=input()
 
     #print("What type of cuisine would you like to search for?")
-    cuisine_chosen=input()
+    #cuisine_chosen=input()
 
     #print("What tags would you like to search for?")
-    tag_chosen=input()
+    #tag_chosen=input()
 
     if cost_chosen=="Any":
         clean1=restaurants
@@ -155,18 +155,19 @@ def choose_me(cost_chosen, cuisine_chosen, tag_chosen):
     final_restaurant=choice['Name'].values[0] # get the name of the restaurant
     return final_restaurant
 
-
+def choose_me1(cost_chosen, cuisine_chosen, tag_chosen):
+    return cuisine_chosen 
 @app.route('/selector',methods=['GET','POST'])
 def selector():
     if request.method != 'POST':
-        return render_template('subs.html', title='Home')
+        return render_template('selector.html', title='Home') 
 
     if request.method == 'POST':
-        old_textarea = request.form['textarea_input']
-        cost_chosen = request.form['original_text1']
-        cuisine_chosen = request.form['original_text2']
-        tag_chosen = request.form['original_text3']
-        new_text = choose_me(cost_chosen, cuisine_chosen, tag_chosen)
-        return render_template('subsResults.html', 
-                                final_restaurant=final_restaurant)
+        # old_textarea = request.form['textarea_input']
+        cost_chosen = request.form['cost_chosen']
+        cuisine_chosen = request.form['cuisine_chosen']
+        tag_chosen = request.form['tag_chosen']
+        new_text = choose_me2(cost_chosen, cuisine_chosen, tag_chosen)
+        return render_template('selector_result.html', 
+                                fr=new_text)
 
