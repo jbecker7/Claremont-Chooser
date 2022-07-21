@@ -151,12 +151,17 @@ def choose_me2(cost_chosen, cuisine_chosen, tag_chosen):
         clean3=clean2
     else:
         clean3 = clean2.loc[clean2['Particularly Good For']==tag_chosen] # get all restaurants with the chosen good for
-    choice=clean3.sample(n=1) # get a random restaurant from the clean3 dataframe
-    final_restaurant=choice['Name'].values[0] # get the name of the restaurant
-    return final_restaurant
+    if clean3.empty:
+        return "There is no restaurant like that", "https://cdn130.picsart.com/320648120422211.png"
+    else: 
+        choice=clean3.sample(n=1) # get a random restaurant from the clean3 dataframe
+        final_restaurant=choice['Name'].values[0] # get the name of the restaurant
+        final_link=choice['Link'].values[0]
+        return final_restaurant,final_link
 
-def choose_me1(cost_chosen, cuisine_chosen, tag_chosen):
-    return cuisine_chosen 
+def choose_me1(x,y,z):
+    return "http://www.google.com","Google"
+
 @app.route('/selector',methods=['GET','POST'])
 def selector():
     if request.method != 'POST':
@@ -164,10 +169,12 @@ def selector():
 
     if request.method == 'POST':
         # old_textarea = request.form['textarea_input']
+        #result=request.form['cost_chosen']+request.form['cuisine_chosen']+request.form['tag_chosen']
         cost_chosen = request.form['cost_chosen']
         cuisine_chosen = request.form['cuisine_chosen']
         tag_chosen = request.form['tag_chosen']
         new_text = choose_me2(cost_chosen, cuisine_chosen, tag_chosen)
         return render_template('selector_result.html', 
-                                fr=new_text)
+                                fr_name=new_text[0],
+                                fr_link=new_text[1])
 
