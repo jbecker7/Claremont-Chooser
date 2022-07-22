@@ -1,5 +1,3 @@
-# Authors: CS For Insight (Summer19 - JG)
-
 try:
     from flask import Flask
 except:
