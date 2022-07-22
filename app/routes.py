@@ -1,30 +1,17 @@
 try:
-    from flask import render_template, redirect, url_for, request, send_from_directory, flash
+    from flask import render_template, request
     from app import app
-    import os, re, json, time
-    from werkzeug.utils import secure_filename
-    # from werkzeug.datastructures import FileStorage
 except:
     print("Not able to import all of the calls needed from the Flask library.")
-
 
 @app.route('/index')
 @app.route('/')
 def index():
-    """ this Python functions returns a string! """
+    """ index/homepage """
     s = render_template('index.html', title='Home')  # see templates/index.html for this!
     return s
 
-
-
-@app.route('/simple')
-def simple():
-    """ returns a simple string """
-    s = "Hi there, from Flask's Python function, simple() ..."
-    return s
-
-
-def choose_me2(cost_chosen, cuisine_chosen, tag_chosen):
+def choose_me(cost_chosen, cuisine_chosen, tag_chosen):
     #Core function that reads in the csv and narrows based on user input
     import pandas as pd
     import numpy as np
@@ -54,6 +41,7 @@ def choose_me2(cost_chosen, cuisine_chosen, tag_chosen):
 
 @app.route('/selector',methods=['GET','POST'])
 def selector():
+    #python function that takes in variables from selector.html, feeds them into the core function, then renders the selector_result page
     if request.method != 'POST':
         return render_template('selector.html', title='Home') 
 
@@ -61,7 +49,7 @@ def selector():
         cost_chosen = request.form['cost_chosen']
         cuisine_chosen = request.form['cuisine_chosen']
         tag_chosen = request.form['tag_chosen']
-        new_text = choose_me2(cost_chosen, cuisine_chosen, tag_chosen)
+        new_text = choose_me(cost_chosen, cuisine_chosen, tag_chosen)
         return render_template('selector_result.html', 
                                 fr_name=new_text[0],
                                 fr_link=new_text[1])
